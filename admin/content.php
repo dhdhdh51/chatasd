@@ -1,0 +1,5 @@
+<?php require_once __DIR__ . '/../includes/bootstrap.php'; require_role('admin');
+if(request_method()==='POST'){require_csrf(); foreach($_POST['settings'] as $k=>$v){$st=$pdo->prepare('INSERT INTO settings(setting_key,setting_value) VALUES(:k,:v) ON DUPLICATE KEY UPDATE setting_value=:v2');$st->execute(['k'=>$k,'v'=>$v,'v2'=>$v]);}}
+$keys=['site_name','seo_title','seo_description','seo_keywords','logo','favicon']; $data=[]; foreach($keys as $k){$data[$k]=app_setting($pdo,$k);} include __DIR__ . '/../includes/header.php'; ?>
+<section class="section"><div class="container"><div class="glass card"><h1>Website Control Panel</h1><form method="post"><input type="hidden" name="_token" value="<?= csrf_token() ?>"><?php foreach($keys as $k): ?><label><?= e($k) ?></label><input class="form-control" name="settings[<?= e($k) ?>]" value="<?= e($data[$k]) ?>"><br><?php endforeach; ?><button class="btn">Save Settings</button></form></div></div></section>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

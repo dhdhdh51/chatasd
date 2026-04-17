@@ -1,0 +1,7 @@
+<?php require_once __DIR__ . '/../includes/bootstrap.php'; require_role('student'); $u=auth_user();
+$student=$pdo->prepare('SELECT * FROM students WHERE user_id=:u LIMIT 1');$student->execute(['u'=>$u['id']]);$s=$student->fetch();
+$marks=[]; if($s){$m=$pdo->prepare('SELECT e.title, mk.subject_name, mk.marks_obtained, mk.max_marks FROM marks mk JOIN exams e ON e.id=mk.exam_id WHERE mk.student_id=:sid');$m->execute(['sid'=>$s['id']]);$marks=$m->fetchAll();}
+$fees=[]; if($s){$f=$pdo->prepare('SELECT * FROM fees WHERE student_id=:sid');$f->execute(['sid'=>$s['id']]);$fees=$f->fetchAll();}
+include __DIR__ . '/../includes/header.php'; ?>
+<section class="section"><div class="container"><div class="glass card"><h1>Student Panel</h1><p>ID: <?= e($s['student_id'] ?? 'N/A') ?></p><a class="btn" href="/student/report-card.php">Download Report Card (PDF)</a></div><div class="card-grid" style="margin-top:1rem"><div class="glass card"><h3>Exam Results</h3><?php foreach($marks as $r): ?><p><?= e($r['title'].' - '.$r['subject_name']) ?>: <?= e($r['marks_obtained'].'/'.$r['max_marks']) ?></p><?php endforeach; ?></div><div class="glass card"><h3>Fee Invoices</h3><?php foreach($fees as $inv): ?><p><?= e($inv['invoice_no']) ?> - <?= e($inv['status']) ?> <a href="/public/pay.php?invoice=<?= e($inv['invoice_no']) ?>">Pay</a></p><?php endforeach; ?></div></div></div></section>
+<?php include __DIR__ . '/../includes/footer.php'; ?>

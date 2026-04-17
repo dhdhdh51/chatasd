@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>/public/index.php</loc></url>
+<url><loc>/public/about.php</loc></url>
+<url><loc>/public/admissions.php</loc></url>
+<url><loc>/public/gallery.php</loc></url>
+<url><loc>/public/notices.php</loc></url>
+<url><loc>/public/contact.php</loc></url>
+</urlset>
